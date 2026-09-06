@@ -1,0 +1,15 @@
+//ejecutar
+uvicorn app.main:app --reload
+
+//crear archivo py
+touch main.py
+
+python3 -m venv venv
+source venv/bin/activate
+
+mkdir -p models schemas routers services
+
+pip install sqlalchemy passlib\[bcrypt\] python-jose\[cryptography\] python-multipart email-validator
+
+// verificar las dependencias que tengo instaladas 
+pip list
