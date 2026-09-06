@@ -9,7 +9,7 @@ from app.services.auth import get_current_user, hash_password
 router = APIRouter(prefix="/usuarios", tags=["Usuarios"])
 
 
-@router.post("/", response_model=UsuarioResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/crearUsuario", response_model=UsuarioResponse, status_code=status.HTTP_201_CREATED)
 def registrar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)):
     existente = db.query(Usuario).filter(Usuario.email == usuario.email).first()
     if existente:

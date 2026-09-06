@@ -14,6 +14,8 @@ def login(datos: UsuarioLogin, db: Session = Depends(get_db)):
     usuario = db.query(Usuario).filter(Usuario.email == datos.email).first()
 
     print(f"Usuario encontrado: {usuario}")  # Depuración: imprime el usuario encontrado
+    # valida si el usuario existe y si la contraseña es correcta
+    # 
     if usuario is None or not verify_password(datos.password, usuario.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
