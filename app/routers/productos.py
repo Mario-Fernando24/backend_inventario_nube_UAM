@@ -17,7 +17,7 @@ from app.services.auth import get_current_user
 router = APIRouter(
     prefix="/productos",
     tags=["Productos"],
-    # sirve para proteger todas las rutas del router, requiriendo autenticación
+    # sirve para proteger todas las rutas del router, requiriendo autenticación con jWT. El usuario autenticado se obtiene mediante la función get_current_user y se pasa como dependencia a todas las rutas del router.
     dependencies=[Depends(get_current_user)],
 )
 

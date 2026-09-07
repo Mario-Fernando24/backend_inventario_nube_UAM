@@ -7,6 +7,7 @@ from app.database import DATABASE_URL, Base
 from app.models.usuario import Usuario  # noqa: F401
 from app.models.categoria import Categoria  # noqa: F401
 from app.models.producto import Producto  # noqa: F401
+from app.models.venta import Venta, DetalleVenta  # noqa: F401
 
 config = context.config
 config.set_main_option("sqlalchemy.url", DATABASE_URL)

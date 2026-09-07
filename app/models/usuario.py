@@ -1,4 +1,5 @@
 from sqlalchemy import Column, DateTime, Integer, String
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from app.database import Base
@@ -13,3 +14,5 @@ class Usuario(Base):
     password = Column(String(255), nullable=False)
     rol = Column(String(50), nullable=False, default="usuario")
     fecha_registro = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+
+    ventas = relationship("Venta", back_populates="usuario")

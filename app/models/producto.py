@@ -18,3 +18,4 @@ class Producto(Base):
     fecha_registro = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 
     categoria = relationship("Categoria", back_populates="productos")
+    detalles_venta = relationship("DetalleVenta", back_populates="producto")
