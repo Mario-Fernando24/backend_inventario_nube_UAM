@@ -3,8 +3,9 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.usuario import Usuario
+from app.routers.usuarios import leer_usuario_actual
 from app.schemas.usuario import Token, UsuarioLogin
-from app.services.auth import create_access_token, verify_password
+from app.services.auth import create_access_token, get_current_user, verify_password
 
 router = APIRouter(prefix="/auth", tags=["Autenticación"])
 
@@ -22,6 +23,7 @@ def login(datos: UsuarioLogin, db: Session = Depends(get_db)):
             detail="Correo o contraseña incorrectos",
             headers={"WWW-Authenticate": "Bearer"},
         )
+    print(f"Usuario autenticado: {usuario}")  # Depuración: imprime el usuario autenticado
 
     access_token = create_access_token(
         {
@@ -30,4 +32,10 @@ def login(datos: UsuarioLogin, db: Session = Depends(get_db)):
             "rol": usuario.rol,
         }
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+
+    usuarioLogueado =  leer_usuario_actual(usuario=usuario)  # Llama a la función para obtener el usuario actual
+
+    print(f"Usuario logueado: {usuarioLogueado.nombre}")  # Depuración: imprime el usuario logueado
+  
+
+    return {"usuario": usuarioLogueado, "access_token": access_token, "token_type": "bearer"}
