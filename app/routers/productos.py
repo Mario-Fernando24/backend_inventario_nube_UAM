@@ -12,8 +12,14 @@ from app.schemas.producto import (
     ProductoResponse,
     ProductoUpdate,
 )
+from app.services.auth import get_current_user
 
-router = APIRouter(prefix="/productos", tags=["Productos"])
+router = APIRouter(
+    prefix="/productos",
+    tags=["Productos"],
+    # sirve para proteger todas las rutas del router, requiriendo autenticación
+    dependencies=[Depends(get_current_user)],
+)
 
 #   Verificar si la categoría existe y está activa
 def _obtener_categoria_activa(id_categoria: int, db: Session) -> Categoria:
@@ -52,6 +58,8 @@ def _obtener_producto(id_producto: int, db: Session) -> Producto:
 def crear_producto(producto: ProductoCreate, db: Session = Depends(get_db)):
     _obtener_categoria_activa(producto.id_categoria, db)
 
+    print("Producto recibido:", producto)  # Depuración: imprimir el objeto ProductoCreate
+
     nuevo = Producto(
         nombre=producto.nombre,
         descripcion=producto.descripcion,
@@ -60,6 +68,7 @@ def crear_producto(producto: ProductoCreate, db: Session = Depends(get_db)):
         id_categoria=producto.id_categoria,
         activo=producto.activo,
     )
+    print("Nuevo producto a agregar:", nuevo)  # Depuración: imprimir el objeto Producto antes de agregarlo a la base de datos
     db.add(nuevo)
     db.commit()
     db.refresh(nuevo)
@@ -76,9 +85,10 @@ def listar_productos(activo: Optional[bool] = None, db: Session = Depends(get_db
     return consulta.order_by(Producto.id_producto).all()
 
 
-@router.get("/{id_producto}", response_model=ProductoResponse)
+@router.get("/obtenerProducto/{id_producto}", response_model=ProductoResponse)
 def obtener_producto(id_producto: int, db: Session = Depends(get_db)):
     return _obtener_producto(id_producto, db)
+
 
 # Actualizar un producto existente
 @router.put("/actualizarProducto/{id_producto}", response_model=ProductoResponse)

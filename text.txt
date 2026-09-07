@@ -13,3 +13,6 @@ pip install sqlalchemy passlib\[bcrypt\] python-jose\[cryptography\] python-mult
 
 // verificar las dependencias que tengo instaladas 
 pip list
+
+// Hacer migración
+alembic upgrade head
