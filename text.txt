@@ -16,3 +16,5 @@ pip list
 
 // Hacer migración
 alembic upgrade head
+
+Universidad2025*
