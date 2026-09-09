@@ -1,14 +1,14 @@
 from fastapi import FastAPI
-from app.database import engine, Base
-from app import models
 from app.routers import auth, categorias, productos, usuarios, ventas
 
-# Genera en PostgreSQL todas las tablas declaradas si no existen al iniciar la app
+# Creación dinámica y segura de tablas para evitar caídas en el startup
 try:
+    from app.database import engine, Base
+    import app.models
     Base.metadata.create_all(bind=engine)
-    print("Tablas verificadas/creadas exitosamente en la base de datos.")
+    print("Tablas verificadas/creadas exitosamente.")
 except Exception as e:
-    print(f"Error al crear las tablas en la base de datos: {e}")
+    print(f"Advertencia: No se pudieron auto-crear las tablas al iniciar: {e}")
 
 app = FastAPI(
     title="API Gestión de Inventarios",
